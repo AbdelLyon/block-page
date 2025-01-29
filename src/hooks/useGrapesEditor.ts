@@ -11,6 +11,8 @@ interface UseGrapesEditorProps {
   blockGrid?: IEditorProps["blockGrid"];
   blockTitle?: IEditorProps["blockTitle"];
   blockText?: IEditorProps["blockText"];
+  blockButton?: IEditorProps["blockButton"];
+  blockImage?: IEditorProps["blockImage"];
   onInit: (editor: Editor) => void;
   onChange: (editor: Editor) => void;
   onSave: (html: string, css: string) => void;
@@ -45,6 +47,8 @@ export const useGrapesEditor = ({
   blockGrid,
   blockTitle,
   blockText,
+  blockButton,
+  blockImage,
   onInit,
   onChange,
   onSave,
@@ -54,11 +58,12 @@ export const useGrapesEditor = ({
   const [activeDevice, setActiveDevice] = useState<Device>("Desktop");
   const [isPreview, setIsPreview] = useState(false);
 
-  // Génération des blocs personnalisés
   const blocks = generateCustomBlocks({
     blockGrid,
     blockTitle,
     blockText,
+    blockButton,
+    blockImage,
   });
 
   useEffect(() => {

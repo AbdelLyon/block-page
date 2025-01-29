@@ -35,6 +35,8 @@ const ProfessionalEditor: React.FC<IEditorProps> = ({
   blockGrid,
   blockTitle,
   blockText,
+  blockButton,
+  blockImage,
 }) => {
   const {
     containerRef,
@@ -53,6 +55,8 @@ const ProfessionalEditor: React.FC<IEditorProps> = ({
     blockGrid,
     blockTitle,
     blockText,
+    blockButton,
+    blockImage,
     onInit,
     onChange,
     onSave,

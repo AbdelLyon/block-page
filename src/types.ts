@@ -47,6 +47,8 @@ export interface IEditorProps {
   blockGrid?: Grid[];
   blockTitle?: IBlock;
   blockText?: IBlock;
+  blockButton: IBlock;
+  blockImage: IBlock;
 }
 
 export type Grid = IBlock & { cols: number };

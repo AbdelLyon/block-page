@@ -20,6 +20,27 @@ const customTheme = {
   border: "#e2e8f0",
 };
 
+const GRIDS = [
+  {
+    id: "grid-1",
+    label: "1 Colonnes",
+    category: "Mise en page",
+    cols: 1,
+  },
+  {
+    id: "grid-2",
+    label: "2 Colonnes",
+    category: "Mise en page",
+    cols: 2,
+  },
+  {
+    id: "grid-3",
+    label: "3 Colonnes",
+    category: "Mise en page",
+    cols: 3,
+  },
+];
+
 // Blocs personnalisés
 const customBlocks = [
   {
@@ -37,21 +58,10 @@ const customBlocks = [
 
   {
     id: "image",
-    label: "Image",
-    category: "Média",
     content: { type: "image" },
     media: '<div style="color: #4b5563;"><ImageIcon size={24} /></div>',
-  },
-  {
-    id: "button",
-    label: "Bouton",
-    category: "Composants",
-    content: `
-      <button style="padding: 0.625rem 1.5rem; background-color: #2563eb; color: white; font-weight: 500; font-size: 0.875rem; border-radius: 0.375rem; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1); transition: background-color 0.15s;">
-        Cliquez ici
-      </button>
-    `,
-    media: '<div style="color: #4b5563;"><Box size={24} /></div>',
+    label: "Image",
+    category: "Média",
   },
 ];
 
@@ -232,26 +242,7 @@ export default function Home() {
     <div className="min-h-screen">
       <ProfessionalEditor
         theme={customTheme}
-        blockGrid={[
-          {
-            id: "grid-1",
-            label: "1 Colonnes",
-            category: "Mise en page",
-            cols: 1,
-          },
-          {
-            id: "grid-2",
-            label: "2 Colonnes",
-            category: "Mise en page",
-            cols: 2,
-          },
-          {
-            id: "grid-3",
-            label: "3 Colonnes",
-            category: "Mise en page",
-            cols: 3,
-          },
-        ]}
+        blockGrid={GRIDS}
         blockTitle={{
           id: "title",
           label: "Titre",
@@ -261,6 +252,16 @@ export default function Home() {
           id: "text",
           label: "Texte",
           category: "Typographie",
+        }}
+        blockImage={{
+          id: "image",
+          label: "Image",
+          category: "Mise en page",
+        }}
+        blockButton={{
+          id: "button",
+          category: "Typographie",
+          label: "Button",
         }}
         blocks={customBlocks}
         styleCategories={styleCategories}
