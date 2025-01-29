@@ -263,7 +263,6 @@ export default function Home() {
           category: "Typographie",
           label: "Button",
         }}
-        blocks={customBlocks}
         styleCategories={styleCategories}
         onInit={handleInit}
         onChange={handleChange}
