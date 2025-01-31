@@ -2,8 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import grapesjs, { Editor } from "grapesjs";
 import { Device, IEditorProps, IEditorTheme, IStyleCategory } from "@/types";
-import { EDITOR_STYLES } from "@/style";
 import { generateCustomBlocks } from "@/helpers";
+import { form } from "@/components/form";
 
 interface UseGrapesEditorProps {
   theme: IEditorTheme;
@@ -69,22 +69,7 @@ export const useGrapesEditor = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const themeStyle = document.createElement("style");
-    themeStyle.textContent = `
-      :root {
-        --editor-primary: ${theme.primary};
-        --editor-secondary: ${theme.secondary};
-        --editor-accent: ${theme.accent};
-        --editor-bg-primary: ${theme.background.primary};
-        --editor-bg-secondary: ${theme.background.secondary};
-        --editor-text-primary: ${theme.text.primary};
-        --editor-text-secondary: ${theme.text.secondary};
-        --editor-border: ${theme.border};
-      }
-      ${EDITOR_STYLES}
-    `;
-    document.head.appendChild(themeStyle);
-
+    // Configuration de base de l'éditeur
     const editor = grapesjs.init({
       container: containerRef.current,
       height: "calc(100vh - 56px)",
@@ -119,9 +104,68 @@ export const useGrapesEditor = ({
       },
     });
 
-    editorRef.current = editor;
+    editor.DomComponents.addType("link", {
+      isComponent: (el) => el.tagName === "A",
+      model: {
+        defaults: {
+          tagName: "a",
+          attributes: {
+            href: "#",
+            target: "_self",
+            class: "text-blue-600 hover:text-blue-800 hover:underline",
+          },
+          content: "Votre lien",
+          draggable: true,
+        },
+      },
+      view: {
+        events: {
+          click: function (e) {
+            e.preventDefault();
+            if (!isPreview) {
+              const component = this.model;
+              editor.Modal.setContent(form(component));
 
+              const modal = editor.Modal;
+
+              modal
+                .getContentEl()
+                ?.querySelector("form")
+                ?.addEventListener("submit", (e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.target as HTMLFormElement);
+
+                  const url = formData.get("link-url") as string;
+                  const text = formData.get("link-text") as string;
+                  const target = formData.get("link-target") as string;
+
+                  component.setAttributes({
+                    href: url,
+                    target: target,
+                  });
+                  component.set("content", text);
+                  modal.close();
+                });
+
+              modal
+                .getContentEl()
+                ?.querySelector(".cancel-btn")
+                ?.addEventListener("click", () => {
+                  modal.close();
+                });
+
+              modal.open();
+            }
+          },
+        },
+      },
+    });
+
+    // Événements de l'éditeur
     editor.on("component:selected", (component) => {
+      if (component.is("button")) {
+        editor.Commands.run("open-button-url-modal", { component });
+      }
       if (component.is("grid") || component.is("section")) {
         component.addClass("gjs-dashed");
       }
@@ -133,19 +177,22 @@ export const useGrapesEditor = ({
 
     editor.on("change:changesCount", () => onChange(editor));
 
+    // Initialisation
+    editorRef.current = editor;
     onInit(editor);
 
     // Nettoyage
     return () => {
       editor.destroy();
-      themeStyle.remove();
     };
-  }, [theme, styleCategories, onInit, onChange]);
+  }, [theme, styleCategories, blocks, onInit, onChange]);
 
+  // Gestionnaires d'événements
   const handleDeviceChange = (device: Device) => {
     setActiveDevice(device);
     editorRef.current?.setDevice(device);
   };
+
   const handlePreview = () => {
     const editor = editorRef.current;
     if (editor) {
@@ -159,13 +206,9 @@ export const useGrapesEditor = ({
     }
   };
 
-  const handleUndo = () => {
-    editorRef.current?.UndoManager.undo();
-  };
+  const handleUndo = () => editorRef.current?.UndoManager.undo();
+  const handleRedo = () => editorRef.current?.UndoManager.redo();
 
-  const handleRedo = () => {
-    editorRef.current?.UndoManager.redo();
-  };
   const handleSave = () => {
     const editor = editorRef.current;
     if (editor) {
@@ -174,13 +217,11 @@ export const useGrapesEditor = ({
       onSave(html, css);
     }
   };
-  const handleOpenCode = () => {
-    editorRef.current?.Commands.run("core:open-code");
-  };
 
-  const handleOpenSettings = () => {
+  const handleOpenCode = () =>
+    editorRef.current?.Commands.run("core:open-code");
+  const handleOpenSettings = () =>
     editorRef.current?.Commands.run("core:open-settings");
-  };
 
   return {
     containerRef,
