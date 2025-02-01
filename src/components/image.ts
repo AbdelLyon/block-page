@@ -6,6 +6,6 @@ export const image = ({ label, category, id }: IBlock) => {
     label: label || "Image",
     category,
     content: { type: "image" },
-    media: '<div style="color: #4b5563;"><ImageIcon size={24} /></div>',
+    media: `<i class="fa-solid fa-image fa-2xl"></i>`,
   };
 };

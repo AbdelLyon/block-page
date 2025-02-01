@@ -10,6 +10,6 @@ export const title = ({ label, category, id }: IBlock) => {
         Votre titre
       </h2>
     `,
-    media: '<div style="color: #4b5563;"><Type size={24} /></div>',
+    media: `<i class="fa-solid fa-heading fa-2xl"></i>`,
   };
 };

@@ -16,15 +16,13 @@ export const grid = (blocks: Grid[]) => {
           ${Array.from({ length: block.cols })
             .map(
               () => `
-            <div style="padding: 1rem; border: 1px dashed #1f2937;"></div>`,
+            <div style="padding: 1rem; border: 1px dashed #dbdbdb; border-raduis : 10px"></div>`,
             )
             .join("")}
         </div>
       `,
       media: `
-        <div style="color: #4b5563; border: 1px solid;">
-          <Grid size={24} />
-        </div>
+<i class="fa-solid fa-table-columns fa-2xl"></i>
       `,
     };
   });

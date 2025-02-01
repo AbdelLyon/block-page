@@ -35,7 +35,7 @@ const ProfessionalEditor: React.FC<IEditorProps> = ({
   blockGrid,
   blockTitle,
   blockText,
-  blockButton,
+
   blockImage,
 }) => {
   const [activeTab, setActiveTab] = useState<"elements" | "pages">("elements");
@@ -43,21 +43,20 @@ const ProfessionalEditor: React.FC<IEditorProps> = ({
   const {
     containerRef,
     activeDevice,
-    isPreview,
     handleDeviceChange,
-    handlePreview,
     handleUndo,
     handleRedo,
     handleSave,
     handleOpenCode,
     handleOpenSettings,
+    editor,
+    isPreview,
   } = useGrapesEditor({
     theme,
     styleCategories,
     blockGrid,
     blockTitle,
     blockText,
-    blockButton,
     blockImage,
     onInit,
     onChange,
@@ -165,7 +164,11 @@ const ProfessionalEditor: React.FC<IEditorProps> = ({
           {/* View controls */}
           <div className="flex items-center space-x-1">
             <button
-              onClick={handlePreview}
+              onClick={() => {
+                if (editor) {
+                  editor.runCommand("toggle-fullscreen");
+                }
+              }}
               className={`p-1.5 rounded transition-colors ${
                 isPreview ? "bg-blue-50" : "hover:bg-gray-100"
               }`}
@@ -233,67 +236,62 @@ const ProfessionalEditor: React.FC<IEditorProps> = ({
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Sidebar */}
-        <div
-          className="w-64 bg-white border-r flex flex-col"
-          style={{ borderColor: theme.border }}
-        >
-          {/* Tabs */}
-          <div className="border-b border-gray-200">
-            <div className="flex">
-              <button
-                onClick={() => setActiveTab("elements")}
-                className={`flex-1 py-2.5 text-sm font-medium text-center focus:outline-none ${
-                  activeTab === "elements"
-                    ? "text-red-500 border-b-2 border-red-500"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                Éléments
-              </button>
-              <button
-                onClick={() => setActiveTab("pages")}
-                className={`flex-1 py-2.5 text-sm font-medium text-center focus:outline-none ${
-                  activeTab === "pages"
-                    ? "text-red-500 border-b-2 border-red-500"
-                    : "text-gray-500 hover:text-gray-700"
-                }`}
-              >
-                Pages
-              </button>
-            </div>
-          </div>
-
-          {/* Fixed container for blocks */}
+        {!isPreview && (
           <div
-            id="blocks-container"
-            className={`flex-1 overflow-y-auto ${
-              activeTab === "elements" ? "block" : "hidden"
-            }`}
-          />
-
-          {/* Pages content */}
-          <div
-            className={`flex-1 overflow-y-auto ${
-              activeTab === "pages" ? "block" : "hidden"
-            }`}
+            className="w-64 bg-white border-r flex flex-col"
+            style={{ borderColor: theme.border }}
           >
-            <div className="p-4">
-              <p className="text-sm text-gray-500">Contenu des pages à venir</p>
+            {/* Tabs */}
+            <div className="border-b border-gray-200">
+              <div className="flex">
+                <button
+                  onClick={() => setActiveTab("elements")}
+                  className={`flex-1 py-2.5 text-sm font-medium text-center focus:outline-none ${
+                    activeTab === "elements"
+                      ? "text-red-500 border-b-2 border-red-500"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  Éléments
+                </button>
+                <button
+                  onClick={() => setActiveTab("pages")}
+                  className={`flex-1 py-2.5 text-sm font-medium text-center focus:outline-none ${
+                    activeTab === "pages"
+                      ? "text-red-500 border-b-2 border-red-500"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  Pages
+                </button>
+              </div>
+            </div>
+
+            {/* Fixed container for blocks */}
+            <div
+              id="blocks-container"
+              className={`flex-1 overflow-y-auto ${
+                activeTab === "elements" ? "block" : "hidden"
+              }`}
+            />
+
+            {/* Pages content */}
+            <div
+              className={`flex-1 overflow-y-auto ${
+                activeTab === "pages" ? "block" : "hidden"
+              }`}
+            >
+              <div className="p-4">
+                <p className="text-sm text-gray-500">
+                  Contenu des pages à venir
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Editor Canvas */}
         <div ref={containerRef} className="flex-1" />
-
-        {/* Right Sidebar */}
-        <div
-          className="w-64 bg-white border-l overflow-y-auto"
-          style={{ borderColor: theme.border }}
-        >
-          <div className="layers-container" />
-          <div className="styles-container" />
-        </div>
       </div>
     </div>
   );

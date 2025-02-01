@@ -73,3 +73,11 @@
   outline: 1px dashed var(--editor-secondary) !important;
   outline-offset: -1px;
 }
+
+.container-picker {
+  width: 100wh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: aqua;
+}
