@@ -1,6 +1,5 @@
 import { Editor } from "grapesjs";
-
-export type Device = "Desktop" | "Tablet" | "Mobile";
+import { generateCustomBlocks } from "./helpers";
 
 export interface IEditorTheme {
   primary: string;
@@ -39,7 +38,6 @@ export interface IStyleCategory {
 
 export interface IEditorProps {
   theme: IEditorTheme;
-  blocks: IBlock[];
   styleCategories: IStyleCategory[];
   onInit: (editor: Editor) => void;
   onChange: (editor: Editor) => void;
@@ -52,3 +50,48 @@ export interface IEditorProps {
 }
 
 export type Grid = IBlock & { cols: number };
+
+export interface Theme {
+  primary: string;
+  accent: string;
+  border: string;
+  background: {
+    primary: string;
+    secondary: string;
+  };
+  text: {
+    primary: string;
+    secondary: string;
+  };
+}
+
+export type Device = "Desktop" | "Tablet" | "Mobile";
+
+export interface DeviceConfig {
+  name: string;
+  width: string;
+  widthMedia?: string;
+}
+export type Action = "create" | "update";
+
+export type IAPayload = {
+  description: string;
+  action: Action;
+  existingTemplate?: string;
+};
+
+export interface GrapesConfig {
+  height: string;
+  fromElement: boolean;
+  storageManager: boolean;
+  blockManager: {
+    appendTo: string;
+    blocks: ReturnType<typeof generateCustomBlocks>;
+  };
+  panels: {
+    defaults: never[];
+  };
+  canvas: {
+    styles: string[];
+  };
+}

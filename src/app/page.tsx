@@ -1,6 +1,7 @@
 "use client";
 
 import ProfessionalEditor from "@/components/DailyAppsEditor";
+// import { HTMLNode, htmlToObject, objectToHtml } from "@/helpers";
 import { Editor } from "grapesjs";
 
 // Thème personnalisé
@@ -38,30 +39,6 @@ const GRIDS = [
     label: "3 Colonnes",
     category: "Mise en page",
     cols: 3,
-  },
-];
-
-// Blocs personnalisés
-const customBlocks = [
-  {
-    id: "section",
-    label: "Section",
-    category: "Structure",
-    content: `
-      <section style="padding: 3rem 1rem;">
-        <div style="max-width: 1200px; margin: 0 auto; border: 1px dashed; padding: 1rem">
-        </div>
-      </section>
-    `,
-    media: '<div style="color: #4b5563;"><Layout size={24} /></div>',
-  },
-
-  {
-    id: "image",
-    content: { type: "image" },
-    media: '<div style="color: #4b5563;"><ImageIcon size={24} /></div>',
-    label: "Image",
-    category: "Média",
   },
 ];
 
@@ -204,7 +181,7 @@ export default function Home() {
   };
 
   const handleChange = (editor: Editor) => {
-    console.log("Contenu mis à jour", editor);
+    // console.log("Contenu mis à jour", editor);
 
     // Sauvegarde automatique dans le localStorage
     const html = editor.getHtml();
@@ -237,6 +214,49 @@ export default function Home() {
       console.error("Erreur lors de la sauvegarde:", error);
     }
   };
+
+  //   // Test de conversion HTML vers Objet
+  //   const html = `
+  //   <div class="container" id="main">
+  //     <p style="color: red">
+  //       Hello
+  //       <span class="highlight">World</span>
+  //       <img src="image.jpg" alt="test"/>
+  //     </p>
+  //     <h2>Titre</h2>
+  //   </div>
+  // `;
+
+  // const obj = htmlToObject(html);
+  // console.log("HTML vers Objet:", obj);
+
+  // Test de conversion Objet vers HTML
+  // const testObj: HTMLNode = {
+  //   tag: "div",
+  //   attributes: { class: "container", id: "main" },
+  //   children: [
+  //     {
+  //       tag: "p",
+  //       attributes: { style: "color: red" },
+  //       children: [
+  //         "Hello ",
+  //         {
+  //           tag: "span",
+  //           attributes: { class: "highlight" },
+  //           children: ["World"],
+  //         },
+  //         {
+  //           tag: "img",
+  //           attributes: { src: "image.jpg", alt: "test" },
+  //           children: [],
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
+
+  // const newHtml = objectToHtml(testObj);
+  // console.log("Objet vers HTML:", newHtml);
 
   return (
     <div className="min-h-screen">
