@@ -3,72 +3,16 @@ import React from "react";
 import { ComponentOptions, TemplateStyle, TemplateType } from "./types";
 import { useIAPrompt } from "./useIAPrompt";
 
-interface FullTemplateConfigurationProps {
+interface TemplateConfigurationProps {
   options: ComponentOptions;
   setOptions: (options: ComponentOptions) => void;
 }
 
-export const FullTemplateConfiguration: React.FC<
-  FullTemplateConfigurationProps
-> = ({ options, setOptions }) => {
-  // Fonction auxiliaire pour obtenir les sections selon le type de template
-  function getSectionsForTemplateType(templateType?: string) {
-    switch (templateType) {
-      case "landing":
-        return [
-          { id: "hero", label: "Hero avec CTA" },
-          { id: "features", label: "Caractéristiques" },
-          { id: "testimonials", label: "Témoignages" },
-          { id: "pricing", label: "Tarification" },
-          { id: "faq", label: "FAQ" },
-          { id: "contact", label: "Formulaire de contact" },
-        ];
-      case "blog":
-        return [
-          { id: "header", label: "En-tête" },
-          { id: "featured", label: "Articles à la une" },
-          { id: "recent", label: "Articles récents" },
-          { id: "categories", label: "Catégories" },
-          { id: "sidebar", label: "Barre latérale" },
-          { id: "newsletter", label: "Inscription newsletter" },
-          { id: "footer", label: "Pied de page" },
-        ];
-      case "portfolio":
-        return [
-          { id: "intro", label: "Introduction personnelle" },
-          { id: "projects", label: "Projets" },
-          { id: "skills", label: "Compétences" },
-          { id: "experience", label: "Expérience" },
-          { id: "testimonials", label: "Témoignages" },
-          { id: "contact", label: "Contact" },
-        ];
-      case "ecommerce":
-        return [
-          { id: "header", label: "En-tête avec panier" },
-          { id: "banner", label: "Bannière promotionnelle" },
-          { id: "featured", label: "Produits vedettes" },
-          { id: "categories", label: "Catégories de produits" },
-          { id: "bestsellers", label: "Meilleures ventes" },
-          { id: "testimonials", label: "Avis clients" },
-          { id: "newsletter", label: "Inscription newsletter" },
-          { id: "footer", label: "Pied de page" },
-        ];
-      case "business":
-      default:
-        return [
-          { id: "header", label: "En-tête" },
-          { id: "about", label: "À propos" },
-          { id: "services", label: "Services" },
-          { id: "team", label: "Équipe" },
-          { id: "portfolio", label: "Portfolio" },
-          { id: "clients", label: "Clients" },
-          { id: "testimonials", label: "Témoignages" },
-          { id: "contact", label: "Contact" },
-          { id: "footer", label: "Pied de page" },
-        ];
-    }
-  }
-  const {} = useIAPrompt();
+export const TemplateConfiguration: React.FC<TemplateConfigurationProps> = ({
+  options,
+  setOptions,
+}) => {
+  const { getSectionsForTemplateType } = useIAPrompt();
   return (
     <div className="space-y-4">
       <div className="bg-gray-50 p-4 rounded-lg">

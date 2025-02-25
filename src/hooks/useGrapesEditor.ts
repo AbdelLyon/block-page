@@ -165,7 +165,6 @@ export const useGrapesEditor = ({
     }
   };
 
-  // Gestion de la prévisualisation
   const handlePreview = () => {
     if (!editorRef.current) return;
 

@@ -1,40 +1,15 @@
 import { Theme } from "@/types";
 
-export type ComponentCategory = "layout" | "content" | "interaction" | "custom";
+export type ComponentCategory = "TEMPLATE" | "CUSTOM";
 
-export type ComponentType =
-  // Layout
-  | "columns"
-  | "section"
-  | "container"
-  | "card"
-  | "grid"
-  // Content
-  | "heading"
-  | "text"
-  | "testimonial"
-  | "team"
-  | "timeline"
-  | "infobox"
-  // Interaction
-  | "form"
-  | "accordion"
-  | "tabs"
-  // Custom
-  | "custom"
-  | "fullTemplate";
+export type ComponentType = "TEMPLATE" | "CUSTOM";
 
-export type ColumnCount = 1 | 2 | 3 | 4;
-export type Spacing = "none" | "small" | "medium" | "large";
-export type Alignment = "left" | "center" | "right" | "stretch";
-export type Position = "top" | "left" | "right" | "bottom" | "background";
 export type ColorScheme =
   | "primary"
   | "secondary"
   | "accent"
   | "neutral"
   | "brand";
-export type Size = "small" | "medium" | "large" | "xlarge";
 export type PlacementType =
   | "after"
   | "before"
@@ -48,16 +23,21 @@ export type TemplateType =
   | "portfolio"
   | "ecommerce"
   | "business";
-export type TemplateStyle = "minimal" | "modern" | "classic" | "bold";
+export type TemplateStyle =
+  | "minimal"
+  | "modern"
+  | "classic"
+  | "bold"
+  | "playful"
+  | "corporate"
+  | "creative";
 
-export interface FormField {
-  name: string;
-  type: "text" | "email" | "textarea" | "select" | "checkbox";
-  required: boolean;
-  placeholder?: string;
-  options?: string[];
+export interface ExtendedComponentOptions extends ComponentOptions {
+  responsiveStrategy?: "mobile-first" | "desktop-first";
+  templateBreakpoints?: string[];
+  accessibilityLevel?: "A" | "AA" | "AAA";
+  performanceOptimizations?: boolean;
 }
-
 export interface TemplateComponent {
   id: string;
   type: ComponentType;
@@ -68,12 +48,6 @@ export interface TemplateComponent {
 }
 
 export interface ComponentOptions {
-  // Options de mise en page
-  columnCount?: ColumnCount;
-  columnContents?: string[];
-  gap?: Spacing;
-  alignment?: Alignment;
-
   // Options de style
   colorScheme?: ColorScheme;
   hasBackground?: boolean;
@@ -83,37 +57,7 @@ export interface ComponentOptions {
 
   // Options de contenu
   title?: string;
-  titleSize?: Size;
-  subtitle?: string;
   description?: string;
-  hasImage?: boolean;
-  imagePosition?: Position;
-  buttonText?: string;
-
-  // Options pour témoignages
-  personName?: string;
-  personRole?: string;
-  personQuote?: string;
-
-  // Options pour équipe
-  teamMembers?: {
-    name: string;
-    role: string;
-    description?: string;
-  }[];
-
-  // Options pour formulaires
-  formFields?: FormField[];
-  submitButtonText?: string;
-
-  // Options pour chronologie
-  timelineEvents?: {
-    date: string;
-    title: string;
-    description?: string;
-  }[];
-
-  // Mode personnalisé
   customPrompt?: string;
 
   // Placement
@@ -121,10 +65,20 @@ export interface ComponentOptions {
     targetId?: string;
     type: PlacementType;
   };
+
+  // Options de template
   templateType?: TemplateType;
   templateStyle?: TemplateStyle;
   templateColorScheme?: string;
   templateSections?: string[];
+
+  // Options de responsivité
+  responsiveStrategy?: "mobile-first" | "desktop-first";
+  templateBreakpoints?: string[];
+
+  // Options d'accessibilité et performance
+  accessibilityLevel?: "A" | "AA" | "AAA";
+  performanceOptimizations?: boolean;
 }
 
 export interface TemplateStructure {

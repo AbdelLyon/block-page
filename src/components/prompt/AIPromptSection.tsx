@@ -5,18 +5,14 @@ import { Wand2 } from "lucide-react";
 import { AIPromptSectionProps } from "./types";
 import { useIAPrompt } from "./useIAPrompt";
 import { CommonStyleOptions } from "./CommonStyleOptions";
-import { ColumnsGridConfiguration } from "./ColumnsGridConfiguration";
-import { TestimonialConfiguration } from "./TestimonialConfiguration";
-import { TeamConfiguration } from "./TeamConfiguration";
-import { TimelineConfiguration } from "./TimelineConfiguration";
-import { FormConfiguration } from "./FormConfiguration";
 import { TemplateStructureView } from "./TemplateStructureView";
 import { CategoryNavigation } from "./CategoryNavigation";
 import { TypeSelector } from "./TypeSelector";
 import { PlacementOptions } from "./PlacementOptions";
 import { PromptPreview } from "./PromptPreview";
 import { AIPromptSectionLayout } from "./IPromptSectionLayout";
-import { FullTemplateConfiguration } from "./ FullTemplateConfiguration";
+import { TemplateConfiguration } from "./TemplateConfiguration";
+import { v4 as uuidv4 } from "uuid";
 
 export const AIPromptSection: React.FC<AIPromptSectionProps> = ({
   theme,
@@ -25,18 +21,12 @@ export const AIPromptSection: React.FC<AIPromptSectionProps> = ({
 }) => {
   const {
     activeCategory,
-    addFormField,
-    addTeamMember,
     addComponentToStructure,
-    addTimelineEvent,
     isModifying,
     isOpen,
     options,
-    removeFormField,
     generateComponentPrompt,
     generatePlacementPrompt,
-    removeTeamMember,
-    removeTimelineEvent,
     resetTemplate,
     error,
     setActiveCategory,
@@ -47,10 +37,6 @@ export const AIPromptSection: React.FC<AIPromptSectionProps> = ({
     showStructure,
     templateStructure,
     toggleOpen,
-    updateFormField,
-    updateTeamMember,
-    updateTimelineEvent,
-    generateComponentId,
     selectedComponentType,
     generateStructuredPrompt,
     COMPONENT_NAMES,
@@ -58,10 +44,10 @@ export const AIPromptSection: React.FC<AIPromptSectionProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const componentId = generateComponentId();
+    const componentId = `component-${uuidv4()}`;
 
     const generatedPrompt =
-      selectedComponentType === "custom"
+      selectedComponentType === "CUSTOM"
         ? options.customPrompt || ""
         : generateStructuredPrompt(componentId, selectedComponentType, options);
 
@@ -71,7 +57,7 @@ export const AIPromptSection: React.FC<AIPromptSectionProps> = ({
   };
 
   const renderComponentConfiguration = () => {
-    if (selectedComponentType === "custom") {
+    if (selectedComponentType === "CUSTOM") {
       return (
         <div>
           <h3 className="text-base font-medium text-gray-800 mb-3">
@@ -97,52 +83,8 @@ export const AIPromptSection: React.FC<AIPromptSectionProps> = ({
 
         <CommonStyleOptions options={options} setOptions={setOptions} />
 
-        {["columns", "grid"].includes(selectedComponentType) && (
-          <ColumnsGridConfiguration
-            options={options}
-            setOptions={setOptions}
-            type={selectedComponentType as "columns" | "grid"}
-          />
-        )}
-
-        {selectedComponentType === "testimonial" && (
-          <TestimonialConfiguration options={options} setOptions={setOptions} />
-        )}
-
-        {selectedComponentType === "team" && (
-          <TeamConfiguration
-            options={options}
-            setOptions={setOptions}
-            addTeamMember={addTeamMember}
-            removeTeamMember={removeTeamMember}
-            updateTeamMember={updateTeamMember}
-          />
-        )}
-        {selectedComponentType === "fullTemplate" && (
-          <FullTemplateConfiguration
-            options={options}
-            setOptions={setOptions}
-          />
-        )}
-
-        {selectedComponentType === "timeline" && (
-          <TimelineConfiguration
-            options={options}
-            setOptions={setOptions}
-            addTimelineEvent={addTimelineEvent}
-            removeTimelineEvent={removeTimelineEvent}
-            updateTimelineEvent={updateTimelineEvent}
-          />
-        )}
-
-        {selectedComponentType === "form" && (
-          <FormConfiguration
-            options={options}
-            setOptions={setOptions}
-            addFormField={addFormField}
-            removeFormField={removeFormField}
-            updateFormField={updateFormField}
-          />
+        {selectedComponentType === "TEMPLATE" && (
+          <TemplateConfiguration options={options} setOptions={setOptions} />
         )}
       </div>
     );
